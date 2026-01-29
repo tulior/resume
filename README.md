@@ -1,11 +1,11 @@
 # Tulio Anjos
-**Senior Software Engineer (.NET Backend)**  
+**Senior Software Engineer (.NET · Full-Stack)**  
 Campo Grande, Brazil (UTC-4) | Works US hours remotely  
 mail@tulio.org | linkedin.com/in/tulioanjos
 
 ---
 
-12 years building .NET backends across US enterprise clients and Brazilian government. Fleet telematics processing 150M+ daily events. Retail POS with Shopify integration and 100K+ SKUs. State audit systems spanning 79 municipalities, each with their own schema.
+12 years shipping software across the stack. Mostly .NET backend, plenty of Angular and React. US enterprise clients and Brazilian government. Fleet telematics processing 150M+ daily events. Retail POS with Shopify integration and 100K+ SKUs. State audit systems spanning 79 municipalities, each with their own schema.
 
 I read unfamiliar codebases in hours, not days. I ask why before I build. Sometimes I fix things nobody asked me to fix because messy code bothers me.
 
