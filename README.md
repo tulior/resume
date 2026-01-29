@@ -1,11 +1,17 @@
-# Tulio Ribeiro
+# Tulio Anjos
 **Senior Software Engineer (.NET Backend)**  
 Campo Grande, Brazil (UTC-4) | Works US hours remotely  
 mail@tulio.org | linkedin.com/in/tulioanjos
 
 ---
 
-12 years building .NET backend systems, mostly in staff augmentation across US enterprise clients and Brazilian government agencies. I've jumped into a lot of unfamiliar codebases, fixed performance problems, and shipped features. I'm looking for a product company where I can stop bouncing between clients and actually own something end-to-end.
+12 years building .NET backends across US enterprise clients and Brazilian government. Fleet telematics processing 150M+ daily events. Retail POS with Shopify integration and 100K+ SKUs. State audit systems spanning 79 municipalities, each with their own schema.
+
+I read unfamiliar codebases in hours, not days. I ask why before I build. Sometimes I fix things nobody asked me to fix because messy code bothers me.
+
+Based in Brazil, working US hours since 2022. English C2. B2B via Deel or direct contract.
+
+Looking for a product company where I can own something end-to-end. Open to staff augmentation—I'm good at it.
 
 **Core stack:** C#, .NET 8, ASP.NET Core, Entity Framework Core, SQL Server, PostgreSQL  
 **Also worked with:** AWS (Lambda, SQS), Azure (Event Hubs), RabbitMQ, Google BigQuery, Angular, Docker, Kubernetes
