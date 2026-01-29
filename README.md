@@ -11,7 +11,7 @@ I read unfamiliar codebases in hours, not days. I ask why before I build. Someti
 
 Based in Brazil, working US hours since 2022. English C2. B2B via Deel or direct contract.
 
-Looking for a product company where I can own something end-to-end. Open to staff augmentation—I'm good at it.
+Looking for a product company where I can own something end-to-end. Open to staff augmentation. I'm good at it.
 
 **Core stack:** C#, .NET 8, ASP.NET Core, Entity Framework Core, SQL Server, PostgreSQL  
 **Also worked with:** AWS (Lambda, SQS), Azure (Event Hubs), RabbitMQ, Google BigQuery, Angular, Docker, Kubernetes
@@ -80,7 +80,3 @@ Looking for a product company where I can own something end-to-end. Open to staf
 * **Bachelor of Engineering – Computer Engineering** | Uniderp (2013)  
 * **Oracle Certified Professional: Java SE 11 Developer** | (2021)  
 * **English:** EF SET C2 Proficient (79/100)
-
----
-
-*Currently learning cloud architecture (working toward GCP certification). I like GCP better than AWS/Azure for the simplicity and data/AI focus. I think it will dominate the field in a few years.* 
