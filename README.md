@@ -1,7 +1,7 @@
 # Tulio Anjos
 **Senior Software Engineer (.NET · Full-Stack)**  
 Campo Grande, Brazil (UTC-4) | Works US hours remotely  
-mail@tulio.org | linkedin.com/in/tulioanjos
+mail@tulio.org | +55 67 9 9266 0804 (WhatsApp) | linkedin.com/in/tulioanjos
 
 ---
 
