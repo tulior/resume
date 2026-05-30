@@ -1,0 +1,13 @@
+Copyright (c) 2026 Túlio Ribeiro dos Anjos
+
+All rights reserved.
+
+This repository contains my personal resume, professional history, biographical
+information, and generated resume PDFs. You may view this repository and download
+the generated PDFs for evaluating my professional background.
+
+You may not copy, modify, redistribute, republish, sublicense, sell, or use this
+resume content, biographical information, or generated PDFs as your own.
+
+The GitHub Actions workflow and Typst layout code are provided for reference
+only and are not licensed for reuse unless explicit written permission is granted.

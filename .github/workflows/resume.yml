@@ -1,0 +1,65 @@
+name: Build Typst Resume
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "resume.typ"
+      - ".github/workflows/resume.yml"
+      - "LICENSE"
+  pull_request:
+    paths:
+      - "resume.typ"
+      - ".github/workflows/resume.yml"
+      - "LICENSE"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: 0.14.2
+
+      - name: Build PDFs with Typst CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          typst compile resume.typ Tulio-Anjos-Senior-Software-Engineer-Resume.pdf --input paper=a4
+
+      - name: Validate PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v7
+        with:
+          path: Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+          if-no-files-found: error
+          archive: false
+
+      - name: Commit generated PDFs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -- Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+          if ! git diff --cached --quiet; then
+            git commit -m "Update resume PDFs via Typst CLI [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
