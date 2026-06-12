@@ -6,21 +6,33 @@ on:
     paths:
       - "resume.typ"
       - ".github/workflows/resume.yml"
-      - "LICENSE"
   pull_request:
     paths:
       - "resume.typ"
       - ".github/workflows/resume.yml"
-      - "LICENSE"
   workflow_dispatch:
 
+# Two quick pushes can't race each other on the auto-commit step.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: write
+  contents: read
+
+env:
+  PDF_A4: Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+  PDF_LETTER: Tulio-Anjos-Senior-Software-Engineer-Resume-Letter.pdf
+  MAX_PAGES: "2"
+  # Deterministic PDF bytes: identical content -> identical file,
+  # so the commit step only fires on real changes.
+  SOURCE_DATE_EPOCH: "0"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -30,24 +42,46 @@ jobs:
         with:
           typst-version: 0.14.2
 
-      - name: Build PDFs with Typst CLI
+      - name: Build PDFs
         shell: bash
         run: |
           set -euo pipefail
-          typst compile resume.typ Tulio-Anjos-Senior-Software-Engineer-Resume.pdf --input paper=a4
+          # --ignore-system-fonts: only Typst's bundled fonts (Libertinus included),
+          # so output doesn't depend on what the runner image happens to ship.
+          typst compile --ignore-system-fonts resume.typ "$PDF_A4" --input paper=a4
+          typst compile --ignore-system-fonts resume.typ "$PDF_LETTER" --input paper=letter
 
-      - name: Validate PDFs
+      - name: Enforce page budget
         shell: bash
         run: |
           set -euo pipefail
-          test -s Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          {
+            echo "### Resume build"
+            echo ""
+            echo "| File | Pages | Size |"
+            echo "|------|-------|------|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for f in "$PDF_A4" "$PDF_LETTER"; do
+            test -s "$f"
+            pages=$(pdfinfo "$f" | awk '/^Pages:/ {print $2}')
+            size=$(du -h "$f" | cut -f1)
+            echo "| $f | $pages | $size |" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$pages" -gt "$MAX_PAGES" ]; then
+              echo "::error file=resume.typ::$f overflowed to $pages pages (budget: $MAX_PAGES). Tighten the spacing scale or cut content."
+              exit 1
+            fi
+          done
 
-      - name: Upload PDF
+      - name: Upload PDFs
         uses: actions/upload-artifact@v7
         with:
-          path: Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+          name: resume-pdfs
+          path: |
+            ${{ env.PDF_A4 }}
+            ${{ env.PDF_LETTER }}
           if-no-files-found: error
-          archive: false
 
       - name: Commit generated PDFs
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -56,9 +90,10 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add -- Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+          git add -- "$PDF_A4" "$PDF_LETTER"
           if ! git diff --cached --quiet; then
             git commit -m "Update resume PDFs via Typst CLI [skip ci]"
+            git pull --rebase origin main
             git push
           else
             echo "No changes to commit."
