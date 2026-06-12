@@ -120,21 +120,19 @@ Looking for a product company where I can own something end-to-end. Open to staf
 = PROFESSIONAL EXPERIENCE
 
 #job-header(
-[VELOZIENT],
-[Remote],
-[Senior Software Engineer (Contractor)],
-[Apr 2026 – Present],
-summary: [Embedded with HungerRush on OrderAI, an LLM-powered voice ordering platform for restaurants. 19 merged PRs in the first six weeks, net-negative diff.],
+  [VELOZIENT],
+  [Remote],
+  [Senior Software Engineer (Contractor)],
+  [Apr 2026 – Present],
+  summary: [Embedded with HungerRush on OrderAI, an LLM-powered voice ordering platform for restaurants.],
 )
 
-* Retired the legacy Vapi and ConversationEngine call paths, making Twilio ConversationRelay the sole telephony path. Staged the rollout: purged provider code and the TypeScript workspace, removed config/admin/infra wiring, then dropped the dead database columns. One call path instead of three, ~15K lines deleted.
-* Fixed the order-submission money path: atomic submission claiming to stop duplicate POS orders on retries, fresh DbContext persistence for the long-running submit flow, and retries for terminal call-status writes that were silently dropped when requests got cancelled.
-* Implemented live menu snapshotting for HOLO-enabled stores. On order start, OrderAI fetches the current HOLO menu, stores it as a deterministically fingerprinted snapshot, and links the order to the exact menu used during the call. If the live fetch fails, the caller is transferred instead of being served stale menu data.
-* Built LLM-generated post-call QA summaries for ended calls, including structured review output for call resolution, ordering outcome, escalation reason, customer experience, and follow-up signals surfaced directly in Teams.
-* Built the Teams alerting pipeline for ended calls: non-blocking webhook posting, suppression rules, Adaptive Card summaries with admin deep links, and centralized CR/CE ending paths so WebSocket closes, Twilio callbacks, and abandoned-call cleanup produce exactly one alert.
-* Added strict enum-backed terminal reasons to the `end_call` and `escalate_call` tools, so the live agent reports a structured reason every time it ends or transfers a call instead of an opaque hangup.
-* Tightened production observability: structured call-routing decision logs, Npgsql driver telemetry, Datadog field-collision fixes, and explicit log signals for duplicate-submission and menu-transfer alerts. Traced ~4,900 warn logs/day — 98% of all service warnings — to expected Twilio info frames and wrote the fix.
-* Also shipped POS order-type resolution from menu data, store-hours call handling, eval suite JSON import/export, PostgreSQL Entra token refresh, OIDC redirect host fixes, and production call-failure fixes from transcript/cart/tool-call analysis.
+- Consolidated OrderAI onto a single Twilio ConversationRelay path by retiring legacy Vapi and ConversationEngine flows, removing provider/admin/infra wiring, and deleting ~15K lines of obsolete code.
+- Hardened the order-submission path by preventing duplicate POS submissions on retries, using a fresh DbContext for long-running submit flows, and retrying terminal writes that were being lost on request cancellation.
+- Implemented live HOLO menu snapshotting at order start, linking each order to the exact menu used during the call; when live fetch fails or times out, the caller is transferred instead of being served stale menu data.
+- Built the ended-call Teams alerting pipeline, including non-blocking webhook delivery, suppression rules, Adaptive Card summaries, admin deep links, and centralized call-ending logic so each call produces exactly one alert.
+- Added structured LLM post-call QA summaries for ended calls, surfacing call resolution, order outcome, escalation reason, customer experience, and follow-up signals directly in Teams.
+- Improved production observability with structured routing logs, Npgsql telemetry, Datadog-safe logging fields, and fixes for noisy Twilio info-frame warnings affecting roughly 4,900 logs per day.
 
 #job-header(
   [BAIRESDEV],
