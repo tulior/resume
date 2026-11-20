@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────
-// Build: typst compile --ignore-system-fonts --font-path fonts resume.typ out.pdf
+// Build: typst compile --ignore-system-fonts --font-path fonts resume.typ Tulio-Anjos-Resume.pdf
 // ─────────────────────────────────────────────────────────────
 
 #set document(
-  title: "Tulio Ribeiro dos Anjos Resume",
-  author: "Tulio Ribeiro dos Anjos",
+  title: "Tulio Anjos - Resume",
+  author: "Tulio Anjos",
   keywords: ("Senior Software Engineer", ".NET", "C#", "Full-Stack"),
   // Omit the document date for reproducible builds with the pinned compiler and fonts.
   date: none,

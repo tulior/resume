@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 env:
-  PDF: Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+  PDF: Tulio-Anjos-Resume.pdf
   # Keep the build timestamp fixed so repeated builds produce the same PDF and checksum.
   SOURCE_DATE_EPOCH: "0"
 

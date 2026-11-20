@@ -12,7 +12,7 @@ See [LICENSE](./LICENSE) for details.
 
 ## Download
 
-* [Download A4 resume PDF](./Tulio-Anjos-Senior-Software-Engineer-Resume.pdf)
+* [Download A4 resume PDF](./Tulio-Anjos-Resume.pdf)
 
 ## Source
 
@@ -29,8 +29,8 @@ The A4 PDF is generated with the Typst CLI.
 Install Typst 0.15.1 and `xxhash`, then run:
 
 ```bash
-SOURCE_DATE_EPOCH=0 typst compile --ignore-system-fonts --font-path fonts resume.typ Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
-xxh128sum Tulio-Anjos-Senior-Software-Engineer-Resume.pdf > Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
+SOURCE_DATE_EPOCH=0 typst compile --ignore-system-fonts --font-path fonts resume.typ Tulio-Anjos-Resume.pdf
+xxh128sum Tulio-Anjos-Resume.pdf > Tulio-Anjos-Resume.pdf.xxh128
 ```
 
 The `fonts/` directory contains unmodified Source Sans 3 OpenType fonts from Adobe's 3.052R release, distributed under the [SIL Open Font License](./fonts/OFL.txt).
@@ -44,7 +44,7 @@ On qualifying pushes or manual runs on `main`, a separate publish job commits th
 To verify the PDF, install `xxhash` and run this command from the directory containing both files:
 
 ```bash
-xxh128sum -c Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
+xxh128sum -c Tulio-Anjos-Resume.pdf.xxh128
 ```
 
 ## Files
@@ -52,8 +52,8 @@ xxh128sum -c Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
 ```text
 resume.typ
 fonts/
-Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
-Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
+Tulio-Anjos-Resume.pdf
+Tulio-Anjos-Resume.pdf.xxh128
 .github/workflows/resume.yml
 LICENSE
 ```
