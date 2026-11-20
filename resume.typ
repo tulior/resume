@@ -93,7 +93,7 @@
 ]
 
 // ── Summary ──
-I’m an experienced software developer with *13 years of experience*. At HungerRush, I develop production LLM voice agents with tool calls that check live menu availability and send orders to restaurant POS systems.
+*13-year shipping record.* At HungerRush, I'm building production LLM voice agents with tool calls to check live menu availability and submit orders to restaurant POS systems.
 
 = Professional experience
 
@@ -105,13 +105,13 @@ I’m an experienced software developer with *13 years of experience*. At Hunger
   summary: [Embedded with *HungerRush on OrderAI* (Azure OpenAI, Twilio).],
 )
 
-- Created a versioned menu normalization for speech: pinned menus with POS IDs/prices/availability.
-- Created a PostgreSQL submission claim and individual EF Core context per POS submission to avoid disposed context failures (in concurrency tests, overlapping retries resulted in 1 POS request).
-- Created SMS prepayment for phone orders: payment callbacks with saved checkout state to finalize the order and text the user a confirmation. Co-developed payment tool selection based on caller intent.
-- Trimmed JSONB reads causing OOM restarts (*93% less allocations*, from 2.15 MB to 151 KB in local WebSocket replay). Fixed a static schema cache leak (*186 to 0 retained tool chains* in local heap profiles).
-- Created LLM post-call reviews with Blazor Admin evidence views. Co-developed a reviewer that confirms the agent’s claims vs. computed cart facts.
-- Turned Twilio ConversationRelay into the sole voice path, eliminating *about 13,000 lines* of legacy Vapi code and config. Retried final call status writes after request cancellation.
-- Turn latency tracing with OpenTelemetry. Restored Azure Container Apps voice capacity with Terraform.
+- Shipped versioned speech labels for live menus, pinned each order to its original menu across refreshes, and preserved POS IDs, prices, and availability. Developed Blazor Admin views for saved menu snapshots.
+- Cut unused JSONB reads that caused prod OOMs. In local WebSocket replay, typical call-load allocations fell *93%* (#box[2,150 KB to 151 KB]). Resolved a static schema cache leak (*186 to 0 retained tool chains*, local heap profiles).
+- Integrated a PostgreSQL claim and a dedicated EF Core context for each POS submission. Fixed disposed-context failures and verified that overlapping retries issued one POS request in concurrency tests.
+- Implemented SMS checkout links for phone orders. Payment callbacks use saved checkout state to complete the order and send an SMS confirmation. Co-developed intent-based payment tool selection.
+- Implemented LLM post-call reviews and a queued Teams publisher. Co-developed a reviewer to verify agent claims against facts computed from the cart.
+- Made Twilio ConversationRelay the sole voice channel, cutting *about 13,000 lines* of legacy Vapi code and config. Retried final call status writes independently of request cancellation.
+- Measured latency from prompt to first audio (Twilio events) and traced model calls (OpenTelemetry). Restored configured voice capacity on Azure Container Apps with Terraform.
 
 #job-header(
   [BairesDev],
@@ -122,36 +122,36 @@ I’m an experienced software developer with *13 years of experience*. At Hunger
 )
 
 #client-project([Fleet telematics (150M+ vehicle signals/day)])[
-  - Batched BigQuery MERGE writes to fix duplicates, reducing execution time from 60 minutes to *30 seconds*.
-  - Created driver trip segmentation with login telemetry to calculate per-driver metrics.
-  - Developed an Angular CSV upload for route shifts and a backend job to compute #box[fuel use/safety scores/distance/speed] from raw telemetry every 5 minutes.
+  - Migrated single-row inserts to batched BigQuery MERGEs, fixing duplicates. Cut runtime from 60 min to *30 sec*.
+  - Leveraged login telemetry to split trips at mid-route driver changes and calculate per-driver metrics.
+  - Developed an Angular CSV upload for route shifts and a job to calculate fuel usage/safety scores/distance/speed every 5 min from telemetry.
 ]
 
 #client-project([Retail POS/inventory])[
-  - Primary engineer on the Shopify integration, connecting the legacy POS with AWS Lambda/SQS. Divided the #box[*100K+ item catalog*] to stay within Shopify’s 100-variant limit.
-  - Synchronized POS stock with Shopify. Used Shopify webhooks to process payments and synchronize stock #box[post-sales].
-  - Wrote edge detection for collage cropping in Lambda to avoid packaging OpenCV.
+  - Primary engineer for the Shopify sales channel. Integrated the legacy POS via AWS Lambda/SQS and split the #box[*100K+ item catalog*] to meet Shopify's 100-variant limit.
+  - Synchronized POS inventory to Shopify. Used webhooks to process payments and update POS stock after sales.
+  - Implemented edge detection for collage cropping in Lambda instead of packaging OpenCV.
   - Replaced a costly third-party tool with a SkiaSharp NuGet package adopted by other teams.
 ]
 
-= Earlier software engineering experience
+= Previous software engineering experience
 
 #earlier-job(
   [Grupo Imagetech],
   [Aug 2019 – Jun 2022],
-  [Developed Java/Kettle ETL for state audits across 79 municipalities. Added Docker/GitLab CI/CD to legacy apps.],
+  [Developed Java/Kettle ETL for audits across 79 municipal schemas. Dockerized legacy apps and added GitLab CI/CD.],
 )
 
 #earlier-job(
   [Fonte Tecnologia],
   [Aug 2017 – Aug 2019],
-  [Maintained the Military Police dispatch API in ASP.NET, including SignalR incident/patrol updates.],
+  [Maintained the ASP.NET Military Police dispatch API, including SignalR incident/patrol updates.],
 )
 
 #earlier-job(
   [PSG Tecnologia],
   [Mar 2013 – Aug 2017],
-  [Developed a state finance system, including a legislative drafting module with recursive SQL Server queries.],
+  [Developed a state finance system. Modeled legislative hierarchies using recursive SQL Server queries.],
 )
 
 = Education & certifications
