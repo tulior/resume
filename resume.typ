@@ -16,7 +16,7 @@
 )
 #set text(lang: "en", font: "Source Sans 3", size: 10.1pt, fill: black, spacing: 115%)
 #set par(justify: false, leading: 5.7pt, spacing: 8pt)
-#set list(marker: [•], tight: true, spacing: 8.1pt, indent: 0pt, body-indent: 6.5pt)
+#set list(marker: [•], tight: true, spacing: 7.3pt, indent: 0pt, body-indent: 6.5pt)
 
 #set strong(delta: 200)
 
@@ -69,7 +69,7 @@
     align: bottom,
     stack(
       dir: ttb,
-      spacing: 4pt,
+      spacing: 8pt,
       text(size: 22.75pt, weight: "bold")[Tulio Anjos],
       text(size: 14.85pt, weight: "bold")[Senior Full-Stack .NET Engineer],
     ),
@@ -103,7 +103,7 @@
 )
 
 - Shipped versioned speech labels for live menus, pinned each order to its original menu across refreshes, and preserved POS IDs, prices, and availability. Developed Blazor Admin views for saved menu snapshots.
-- Cut unused JSONB reads that caused prod OOMs. In local WebSocket replay, typical call-load allocations fell *93%* (#box[2,150 KB to 151 KB]). Resolved a static schema cache leak (*186 to 0 retained tool chains*, local heap profiles).
+- Cut unused JSONB reads that caused prod OOMs. In local WebSocket replay, typical call-load allocations fell *93%* (#box[2,150 KB to 151 KB]). Resolved a static schema cache leak (*186 to 0 retained tool chains* in local heap profiling).
 - Integrated a PostgreSQL claim and a dedicated EF Core context for each POS submission. Fixed disposed-context failures and verified that overlapping retries issued one POS request in concurrency tests.
 - Implemented SMS checkout links for phone orders. Payment callbacks use saved checkout state to complete the order and send an SMS confirmation. Co-developed intent-based payment tool selection.
 - Implemented LLM post-call reviews and a queued Teams publisher. Co-developed a reviewer to verify agent claims against facts computed from the cart.
@@ -120,7 +120,7 @@
 
 #client-project([Fleet telematics (150M+ vehicle signals/day)])[
   - Migrated single-row inserts to batched BigQuery MERGEs, fixing duplicates. Cut runtime from 60 min to *30 sec*.
-  - Leveraged login telemetry to split trips at mid-route driver changes and calculate per-driver metrics.
+  - Segmented trips using login telemetry to calculate per-driver metrics when drivers changed mid-route.
   - Developed an Angular CSV upload for route shifts and a job to calculate fuel usage/safety scores/distance/speed every 5 min from telemetry.
 ]
 
@@ -157,7 +157,9 @@ B.Eng. in Computer Engineering · Uniderp (2013)
 #linebreak()
 Oracle Certified Professional: Java SE 11 Developer (2021), EF SET English C2 Proficient
 
-#block(above: 10pt, breakable: false, width: 100%, inset: (top: 5pt), stroke: (top: 0.5pt + luma(145)))[
+= Technical skills
+
+#block(breakable: false)[
   #set text(size: 9.6pt)
   #set par(leading: 3.7pt)
   *Application*#h(4pt)C\# 14, .NET 10, ASP.NET Core, EF Core, SignalR, Blazor, Angular, Java
