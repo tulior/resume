@@ -26,21 +26,26 @@ The A4 PDF is generated with the Typst CLI.
 
 ## Build locally
 
-Install Typst, then run:
+Install Typst 0.15.1 and `xxhash`, then run:
 
 ```bash
-typst compile --ignore-system-fonts --font-path fonts resume.typ Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+SOURCE_DATE_EPOCH=0 typst compile --ignore-system-fonts --font-path fonts resume.typ Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+xxh128sum Tulio-Anjos-Senior-Software-Engineer-Resume.pdf > Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
 ```
 
 The `fonts/` directory contains unmodified Source Sans 3 OpenType fonts from Adobe's 3.052R release, distributed under the [SIL Open Font License](./fonts/OFL.txt).
 
 ## GitHub Actions
 
-The workflow builds the A4 PDF on pushes and pull requests that change the resume source, fonts, or workflow.
+The workflow builds the A4 PDF and generates its XXH128 checksum on pushes and pull requests that change the resume source, fonts, or workflow. Both files are available in the workflow artifact.
 
-On pushes to `main`, the generated PDF is committed back to the repository only when the rendered output changes.
+On qualifying pushes or manual runs on `main`, a separate publish job commits the PDF and its `.xxh128` file together. If `main` advances during the build, a manual run on the current `main` rebuilds from that revision.
 
-The workflow also enforces a two-page maximum for the generated PDF.
+To verify the PDF, install `xxhash` and run this command from the directory containing both files:
+
+```bash
+xxh128sum -c Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
+```
 
 ## Files
 
@@ -48,6 +53,7 @@ The workflow also enforces a two-page maximum for the generated PDF.
 resume.typ
 fonts/
 Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
+Tulio-Anjos-Senior-Software-Engineer-Resume.pdf.xxh128
 .github/workflows/resume.yml
 LICENSE
 ```

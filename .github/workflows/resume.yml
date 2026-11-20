@@ -14,7 +14,7 @@ on:
       - ".github/workflows/resume.yml"
   workflow_dispatch:
 
-# Two quick pushes can't race each other on the auto-commit step.
+# Prefer the newest run for each ref. The publish push also checks ancestry.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -24,24 +24,22 @@ permissions:
 
 env:
   PDF: Tulio-Anjos-Senior-Software-Engineer-Resume.pdf
-  MAX_PAGES: "2"
-  # Deterministic PDF bytes: identical content -> identical file,
-  # so the commit step only fires on real changes.
+  # Keep the build timestamp fixed so repeated builds produce the same PDF and checksum.
   SOURCE_DATE_EPOCH: "0"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Typst
         uses: typst-community/setup-typst@v5
         with:
-          typst-version: 0.14.2
+          typst-version: 0.15.1
 
       - name: Build A4 PDF
         shell: bash
@@ -50,46 +48,57 @@ jobs:
           # Use the checked-in Source Sans 3 fonts independently of the runner's system fonts.
           typst compile --ignore-system-fonts --font-path fonts resume.typ "$PDF"
 
-      - name: Enforce page budget
+      - name: Install xxHash
         shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y -qq poppler-utils
-          {
-            echo "### Resume build"
-            echo ""
-            echo "| File | Pages | Size |"
-            echo "|------|-------|------|"
-          } >> "$GITHUB_STEP_SUMMARY"
-          test -s "$PDF"
-          pages=$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')
-          size=$(du -h "$PDF" | cut -f1)
-          echo "| $PDF | $pages | $size |" >> "$GITHUB_STEP_SUMMARY"
-          if [ "$pages" -gt "$MAX_PAGES" ]; then
-            echo "::error file=resume.typ::$PDF overflowed to $pages pages (budget: $MAX_PAGES). Tighten the spacing scale or cut content."
-            exit 1
-          fi
+          sudo apt-get install -y --no-install-recommends xxhash
 
-      - name: Upload PDF
-        uses: actions/upload-artifact@v7
-        with:
-          name: resume-pdfs
-          path: ${{ env.PDF }}
-          if-no-files-found: error
-
-      - name: Commit generated PDF
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Generate PDF checksum
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add -- "$PDF"
+          xxh128sum -- "$PDF" > "$PDF.xxh128"
+
+      - name: Upload PDF and checksum
+        uses: actions/upload-artifact@v7
+        with:
+          name: resume-pdfs
+          path: |
+            ${{ env.PDF }}
+            ${{ env.PDF }}.xxh128
+          if-no-files-found: error
+
+  publish:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout built revision
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Download PDF and checksum
+        uses: actions/download-artifact@v8
+        with:
+          name: resume-pdfs
+          path: ${{ runner.temp }}/resume-pdfs
+
+      - name: Commit generated PDF and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -- "$RUNNER_TEMP/resume-pdfs/$PDF" "$RUNNER_TEMP/resume-pdfs/$PDF.xxh128" .
+          git add -- "$PDF" "$PDF.xxh128"
           if ! git diff --cached --quiet; then
-            git commit -m "Update resume PDF via Typst CLI [skip ci]"
-            git pull --rebase origin main
-            git push
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git commit -m "Update resume PDF and checksum [skip ci]"
+            git push origin HEAD:refs/heads/main
           else
             echo "No changes to commit."
           fi

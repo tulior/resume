@@ -6,8 +6,7 @@
   title: "Tulio Ribeiro dos Anjos Resume",
   author: "Tulio Ribeiro dos Anjos",
   keywords: ("Senior Software Engineer", ".NET", "C#", "Full-Stack"),
-  // Reproducible output: PDF bytes only change when content changes,
-  // which keeps the CI auto-commit from producing noise commits.
+  // Omit the document date for reproducible builds with the pinned compiler and fonts.
   date: none,
 )
 #set page(
@@ -35,18 +34,15 @@
 #show heading.where(level: 2): it => text(weight: "semibold", it.body)
 #show heading.where(level: 3): it => text(weight: "semibold", it.body)
 
-#let employer-line(label, dates) = grid(
-  columns: (1fr, auto),
-  column-gutter: 12pt,
-  align: (left + horizon, right + horizon),
-  label,
-  text(size: 9.6pt, fill: luma(62), dates),
-)
+#let employer-line(label, dates) = [
+  #label#h(12pt)#text(size: 9.6pt, fill: luma(62), dates)
+]
 
 #let job-header(company, location, role, dates, summary: none) = block(sticky: true, above: 14pt, below: 6pt)[
   #employer-line([
     #text(size: 12.6pt)[#heading(level: 2, company)]#h(4.5pt)| #location
   ], dates)
+  #linebreak()
   #role
   #if summary != none [
     #linebreak()
@@ -61,6 +57,7 @@
 
 #let earlier-job(company, dates, contribution) = block(above: 8pt, breakable: false)[
   #employer-line(heading(level: 2, company), dates)
+  #linebreak()
   #contribution
 ]
 
@@ -88,7 +85,7 @@
   )
   #v(4pt)
   #text(size: 9.6pt)[
-    #link("mailto:mail@tulio.org")[mail\@tulio.org], #link("tel:+5567992660804")[+55 67 99266-0804 (WhatsApp)], #link("https://linkedin.com/in/tulioanjos")[LinkedIn]
+    #link("mailto:mail@tulio.org")[mail\@tulio.org], #link("https://wa.me/5567992660804")[+55 67 99266-0804 (WhatsApp)], #link("https://linkedin.com/in/tulioanjos")[LinkedIn]
   ]
 ]
 
@@ -162,13 +159,12 @@ Oracle Certified Professional: Java SE 11 Developer (2021), EF SET English C2 Pr
 
 #block(above: 10pt, breakable: false, width: 100%, inset: (top: 5pt), stroke: (top: 0.5pt + luma(145)))[
   #set text(size: 9.6pt)
-  #grid(
-    columns: (auto, 1fr),
-    column-gutter: 12pt,
-    row-gutter: 3.7pt,
-    strong[Application], [C\# 14, .NET 10, ASP.NET Core, EF Core, SignalR, Blazor, Angular, Java],
-    strong[Data], [PostgreSQL, SQL Server, BigQuery],
-    strong[AI/voice], [Azure OpenAI, Twilio ConversationRelay, LLM tool calling/evaluation],
-    strong[Cloud/ops], [Azure Container Apps, AWS Lambda, SQS, Docker, Terraform, OpenTelemetry],
-  )
+  #set par(leading: 3.7pt)
+  *Application*#h(4pt)C\# 14, .NET 10, ASP.NET Core, EF Core, SignalR, Blazor, Angular, Java
+  #linebreak()
+  *Data*#h(4pt)PostgreSQL, SQL Server, BigQuery
+  #linebreak()
+  *AI/voice*#h(4pt)Azure OpenAI, Twilio ConversationRelay, LLM tool calling/evaluation
+  #linebreak()
+  *Cloud/ops*#h(4pt)Azure Container Apps, AWS Lambda, SQS, Docker, Terraform, OpenTelemetry
 ]
