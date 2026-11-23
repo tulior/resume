@@ -85,7 +85,11 @@
   )
   #v(4pt)
   #text(size: 9.6pt)[
-    #link("mailto:mail@tulio.org")[mail\@tulio.org], #link("https://wa.me/5567992660804")[+55 67 99266-0804 (WhatsApp)], #link("https://linkedin.com/in/tulioanjos")[LinkedIn]
+    #link("mailto:mail@tulio.org")[mail\@tulio.org],
+    #link("https://wa.me/5567992660804")[+55 67 99266-0804 (WhatsApp)],
+    #link("https://www.linkedin.com/in/tulioanjos/")[linkedin.com/in/tulioanjos],
+    #link("https://github.com/tulior")[github.com/tulior],
+    #link("https://tulio.org/")[tulio.org]
   ]
 ]
 
